@@ -6,10 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,14 +19,11 @@ public class MainActivity extends AppCompatActivity {
         ListView listView;
         ArrayAdapter<String> adapter;
         ArrayList cats = new ArrayList();
-        BufferedReader d = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            cats.add(new String[Integer.parseInt(d.readLine())]);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Scanner sc = new Scanner(System.in);
+        cats.add(new String[Integer.parseInt(sc.nextLine())]);
         listView = (ListView) findViewById(R.id.listView);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,cats );
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cats);
+        
 
     }
 }
