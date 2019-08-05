@@ -9,7 +9,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity {
+Entity
+public class MainActivity extends AppCompatActivity
+       {
+           @PrimaryKey String name;
+           int age;
+           String favoriteColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         cats.add(new String[Integer.parseInt(sc.nextLine())]);
         listView = (ListView) findViewById(R.id.listView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cats);
-        
 
     }
+
 }
