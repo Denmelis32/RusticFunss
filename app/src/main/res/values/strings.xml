@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RusticFuns</string>
+    <string name="btAdd">Добавить</string>
+    <string name="btDel">Удалить</string>
 </resources>
