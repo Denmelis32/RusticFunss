@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AppDatabase db;
     MilkDeliver milkDeliver = new MilkDeliver();
     DateConverter mConverters = new DateConverter();
-  
+    Date cal = new Date();
+
     double num;
     float num1;
     float num3;
@@ -39,10 +38,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btAdd, btDel;
+        Button btAdd;
         db = Room.databaseBuilder(activity.getApplicationContext(),
                 AppDatabase.class, "populus-database").allowMainThreadQueries().build();
-        List<MilkDeliver> everyone = db.getMilkDao().getAllPmilk();
+      //  List<MilkDeliver> everyone = db.getMilkDao().getAllPmilk();
 
         amountOfMilkEditText = (EditText) findViewById(R.id.amountOfMilkEditText);
         milkPrice = (EditText) findViewById(R.id.milkPrice);
@@ -51,46 +50,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MyMilkDeliveryAdapter();
-        mAdapter.setMilkDeliveryList(everyone);
         mRecyclerView.setAdapter(mAdapter);
+        updateAdapter();
+        Date calka = new Date();
         btAdd = (Button) findViewById(R.id.btAdd);
-        btDel = (Button) findViewById(R.id.btDel);
+
         btAdd.setOnClickListener(this);
-        btDel.setOnClickListener(this);
+
         amountOfMilkEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                }
+            }
         });
         milkPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
             }
         });
-        }
-        private void setUpRecyclerView() {
+    }
+    private void updateAdapter(){
+        List<MilkDeliver> everyone = db.getMilkDao().getAllPmilk();
+        mAdapter.setMilkDeliveryList(everyone);
+    }
+
+    private void setUpRecyclerView() {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(mAdapter));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
+
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -101,25 +113,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     double num = (double) num1;
                     double num2 = (double) num3;
 
-                        milkDeliver.setDate(cal);
+                    milkDeliver.setDate(cal);
 
 
                     milkDeliver.setMilkPrice(num2);
                     milkDeliver.setTheNumbeOfLitersOfMilk(num);
+
                     if (milkDeliver.getDate() != null && milkDeliver.getMilkPrice() != 0 && milkDeliver.getTheNumbeOfLitersOfMilk() != 0) {
                         Toast.makeText(activity, "Вы добавили запись", Toast.LENGTH_SHORT).show();
                         db.getMilkDao().insertAll(milkDeliver);
+                        updateAdapter();
                         amountOfMilkEditText.setText("");
                         milkPrice.setText("");
-                        } else {
+
+                    } else {
                         Toast.makeText(activity, "Вы не ввели количество молока", Toast.LENGTH_SHORT).show();
-                        }
+                    }
                 } else {
                     Toast.makeText(activity, "Вы не ввели количество молока", Toast.LENGTH_SHORT).show();
                 }
         }
     }
-
 
 
 }
